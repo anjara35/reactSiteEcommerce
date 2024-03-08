@@ -5,10 +5,10 @@ const Footer = () => {
     <div className='bg-black p-2'>
       <ul className='text-white flex items-center gap-[12vw] justify-center'> 
         <li>
-        <a>Conditions of Us</a>
+        <a href='./maxence.jpg'>Conditions of Us</a>
         </li>
         <li>
-          <a>Privacy Notice</a>
+          <a href='./maxence_grolem.jpg'>Privacy Notice</a>
         </li>
       </ul>
     </div>
