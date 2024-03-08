@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import Panier from './Panier';
 
 const Catalogue = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [panier, setPanier] = useState([]);
+    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')
@@ -29,6 +32,21 @@ const Catalogue = () => {
 
     const handleCategoryChange = (e) => {
         setSelectedCategory(e.target.value);
+    };
+
+    const ajouterAuPanier = (product) => {
+        setPanier([...panier, product]);
+        setTotal(total + product.price);
+    };
+
+    const retirerDuPanier = (product) => {
+        const newPanier = panier.filter(item => item.id !== product.id);
+        setPanier(newPanier);
+        setTotal(total - product.price);
+    };
+
+    const handleBuyNow = (product) => {
+        ajouterAuPanier(product);
     };
 
     return (
@@ -56,11 +74,12 @@ const Catalogue = () => {
                         <div className="flex-1 p-4">
                             <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
                             <p className="text-gray-700 mb-2">{product.description}</p>
-                            <button className="px-4 py-2 bg-blue-[#A490EB] text-white rounded">Buy Now</button>
+                            <button onClick={() => handleBuyNow(product)} className="px-4 py-2 bg-[#A490EB] text-white rounded">Buy Now</button>
                         </div>
                     </div>
                 ))}
             </div>
+            <Panier panier={panier} total={total} retirerDuPanier={retirerDuPanier} />
         </div>
     );
 };

@@ -5,7 +5,7 @@ const Footer = () => {
     <div className='bg-black p-2'>
       <ul className='text-white flex items-center gap-[12vw] justify-center'> 
         <li>
-        <a href='./maxence.jpg'>Conditions of Us</a>
+        <a href='./max_le_bg.jpg'>Conditions of Us</a>
         </li>
         <li>
           <a href='./maxence_grolem.jpg'>Privacy Notice</a>
