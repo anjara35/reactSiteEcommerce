@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import Panier from './Panier';
+import React, {useState, useEffect, useContext} from 'react';
+import { CartContext } from "../context/CartContext.jsx";
+import { Link } from "react-router-dom";
 
 const Catalogue = () => {
+
+    const { addToCart } = useContext(CartContext);
+
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const [panier, setPanier] = useState([]);
-    const [total, setTotal] = useState(0);
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')
@@ -34,21 +36,6 @@ const Catalogue = () => {
         setSelectedCategory(e.target.value);
     };
 
-    const ajouterAuPanier = (product) => {
-        setPanier([...panier, product]);
-        setTotal(total + product.price);
-    };
-
-    const retirerDuPanier = (product) => {
-        const newPanier = panier.filter(item => item.id !== product.id);
-        setPanier(newPanier);
-        setTotal(total - product.price);
-    };
-
-    const handleBuyNow = (product) => {
-        ajouterAuPanier(product);
-    };
-
     return (
         <div className="catalogue">
             <h2 className="text-xl font-bold mb-4">Catalogue</h2>
@@ -72,14 +59,16 @@ const Catalogue = () => {
                             <p className="text-gray-800 font-bold mt-8 text-center text-xl">${product.price}</p>
                         </div>
                         <div className="flex-1 p-4">
-                            <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+                            <Link to={`/product/${product.id}`}>
+                                <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
+                            </Link>
                             <p className="text-gray-700 mb-2">{product.description}</p>
-                            <button onClick={() => handleBuyNow(product)} className="px-4 py-2 bg-[#A490EB] text-white rounded">Buy Now</button>
+                            <button onClick={() => addToCart(product,product.id)} className="px-4 py-2 bg-[#A490EB] text-white rounded">Ajouter Au Panier</button>
+                            <button className="px-4 py-2 bg-[#A490EB] text-white rounded"><Link to={`/product/${product.id}`}>Details</Link></button>
                         </div>
                     </div>
                 ))}
             </div>
-            <Panier panier={panier} total={total} retirerDuPanier={retirerDuPanier} />
         </div>
     );
 };
